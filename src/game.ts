@@ -57,6 +57,7 @@ function rec(){try{return JSON.parse(localStorage.getItem('rfa')||'')||{w:0,d:0,
 function saveRec(r){try{localStorage.setItem('rfa',JSON.stringify(r))}catch(e){}}
 function home(){clearInterval(S.tm);clearTimeout(S.ct);inGame=false;const r=rec();A.innerHTML=`<div class=logo>ROOHU<b>FOOTBALL ARENA</b></div><p class=mu>Draft legends, build your XI, win the final.</p>
 <div class=card><h3>Play vs CPU</h3><div class=row>${DIFF.map((d,i)=>`<button onclick="start('cpu',${i})">${d}</button>`).join('')}</div></div>
+<div class=card><h3>Online multiplayer</h3><p class=mu>Create a private room or join a friend using a room code.</p><button class=p style="width:100%" onclick="onlineHome()">Play online</button></div>
 <div class=card><h3>Two players, one device</h3><button class=p onclick="start('local',0)">Pass and play</button></div>
 <div class=card><h3>Your record vs CPU</h3><p style="margin:0">${r.w} W · ${r.d} D · ${r.l} L</p></div>
 <p class=mu>Ratings are game ratings, not official statistics. This version is single-device: online rooms are not included.</p>`}
