@@ -1,5 +1,5 @@
 // Customises the Android project that "npx cap add android" generates:
-// package/activity, immersive mode, portrait lock, no INTERNET permission, icons, splash.
+// package/activity, immersive mode, portrait lock, internet access, icons, splash.
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -7,11 +7,12 @@ const MAIN = 'android/app/src/main';
 const need = (p) => { if (!fs.existsSync(p)) throw new Error(`Missing ${p}. Run "npx cap add android" first.`); };
 const write = (p, s) => { fs.mkdirSync(path.dirname(p), { recursive: true }); fs.writeFileSync(p, s); };
 
-// 1. Manifest: portrait only, drop the unused INTERNET permission.
+// 1. Manifest: portrait only and allow Firebase network access.
 const manifestPath = `${MAIN}/AndroidManifest.xml`;
 need(manifestPath);
 let m = fs.readFileSync(manifestPath, 'utf8');
-m = m.replace(/\s*<uses-permission android:name="android\.permission\.INTERNET"\s*\/>/, '');
+if (!m.includes('android.permission.INTERNET')) m = m.replace('<manifest', '<manifest');
+if (!m.includes('android.permission.INTERNET')) m = m.replace(/<application/, '<uses-permission android:name="android.permission.INTERNET" />\n    <application');
 if (!m.includes('android:screenOrientation')) m = m.replace('<activity', '<activity android:screenOrientation="portrait"');
 write(manifestPath, m);
 
